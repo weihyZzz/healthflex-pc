@@ -1,9 +1,10 @@
-import  { memo } from 'react'
+import './App.css'
+import Login from './containers/Login'
 
-const App = memo(() => {
+const App = () => {
   return (
-    <div>App</div>
+      <Login/>
   )
-})
+}
 
 export default App

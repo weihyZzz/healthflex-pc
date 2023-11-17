@@ -14,15 +14,31 @@ import {
   
   import styles from './index.module.less';
 import { useMutation } from '@apollo/client';
-import { SEND_CODE_MSG } from '../../graphql/auth';
+import { LOGIN, SEND_CODE_MSG } from '../../graphql/auth';
+interface Ivalue {
+  tel: string;
+  code: string;
+}
   
   export default () => {
     // 执行发送短信验证码的函数
     const [run] = useMutation(SEND_CODE_MSG)
+    const [login] = useMutation(LOGIN)
+    const loginHandler = async (values: Ivalue) => {
+      const res = await login({
+        variables: values
+      })
+      if(res.data.login) {
+        message.success('登录成功')
+        return
+      }
+      message.error('登录失败')
+    }
     return <div className={styles.container}>
     <LoginFormPage
       backgroundImageUrl="https://gw.alipayobjects.com/zos/rmsportal/FfdJeJRQWjEeGTpqgBKj.png"
       logo="https://healthflex.oss-cn-beijing.aliyuncs.com/images/logo.jpg"
+      onFinish={loginHandler}
     >
       <Tabs centered>
         <Tabs.TabPane key="phone" tab="手机号登录" />
@@ -33,7 +49,7 @@ import { SEND_CODE_MSG } from '../../graphql/auth';
             size: 'large',
             prefix: <MobileOutlined className="prefixIcon" />,
           }}
-          name="phone"
+          name="tel"
           placeholder="手机号"
           rules={[
             {
@@ -62,7 +78,7 @@ import { SEND_CODE_MSG } from '../../graphql/auth';
             return '获取验证码';
           }}
           phoneName="phone"
-          name="captcha"
+          name="code"
           rules={[
             {
               required: true,
@@ -70,13 +86,17 @@ import { SEND_CODE_MSG } from '../../graphql/auth';
             },
           ]}
           onGetCaptcha={async (tel: string) => {
-          console.log('phone', tel);
-            run({
-              variables: {
-                tel,
-              }
-            })
-            message.success(`获取验证码成功！`);
+            console.log('phone', tel);
+            const res = await run({
+                variables: {
+                  tel,
+                }
+            });
+            if(res.data.sendCodeMsg) {
+              message.success(`获取验证码成功！`);
+            } else {
+              message.error('获取验证码失败!')
+            }
           }}
         />
       </>

@@ -20,6 +20,7 @@ export default () => {
   const [run] = useMutation(SEND_CODE_MSG);
   const [login] = useMutation(LOGIN);
   const loginHandler = async (values: Ivalue) => {
+    console.log('values:', values);
     const res = await login({
       variables: values,
     });

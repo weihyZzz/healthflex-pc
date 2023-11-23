@@ -10,6 +10,7 @@ import { message, Tabs } from 'antd';
 import { useMutation } from '@apollo/client';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTitle } from '@/hooks';
+import { useUserContext } from '@/hooks/userHooks';
 import styles from './index.module.less';
 import { LOGIN, SEND_CODE_MSG } from '../../graphql/auth';
 import { AUTH_TOKEN } from '../../utils/constants';
@@ -26,6 +27,7 @@ export default () => {
   const [login] = useMutation(LOGIN);
   const nav = useNavigate();
   const [params] = useSearchParams();
+  const { store } = useUserContext();
   useTitle('登录');
   const loginHandler = async (values: Ivalue) => {
     console.log('values:', values);
@@ -33,6 +35,11 @@ export default () => {
       variables: values,
     });
     if (res.data.login.code === 200) {
+      console.log('store.refetchHandler', store.refetchHandler);
+      if (store.refetchHandler) {
+        store.refetchHandler();
+      }
+      // store.refetchHandler();
       if (values.autoLogin) {
         sessionStorage.setItem(AUTH_TOKEN, '');
         localStorage.setItem(AUTH_TOKEN, res.data.login.data);
@@ -50,7 +57,7 @@ export default () => {
     <div className={styles.container}>
       <LoginFormPage
         backgroundImageUrl="https://gw.alipayobjects.com/zos/rmsportal/FfdJeJRQWjEeGTpqgBKj.png"
-        logo="https://healthflex.oss-cn-beijing.aliyuncs.com/images/logo.jpg"
+        logo="https://healthflex.oss-cn-beijing.aliyuncs.com/images/logo_width.png"
         onFinish={loginHandler}
       >
         <Tabs

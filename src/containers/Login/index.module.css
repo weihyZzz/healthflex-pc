@@ -4,8 +4,9 @@
   overflow: hidden;
 }
 .container :global(.ant-pro-form-login-page-logo) {
-  height: 150px;
-  width: 300px;
+  height: 109px;
+  width: 122px;
+  margin-left: 15px;
 }
 .actions {
   display: flex;

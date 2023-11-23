@@ -7,7 +7,7 @@ const httpLink = createHttpLink({
 });
 // 创建一个 Apollo Link 上下文修改器
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem(AUTH_TOKEN);
+  const token = sessionStorage.getItem(AUTH_TOKEN) || localStorage.getItem(AUTH_TOKEN);
   return {
     headers: {
       ...headers,

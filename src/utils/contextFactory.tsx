@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { createContext, useMemo, useState, useContext } from "react";
-import { IPropChild } from "./types";
+import React, {
+  createContext, useMemo, useState, useContext,
+} from 'react';
+import { IPropChild } from './types';
 
 interface IStore {
   key: string;
@@ -8,26 +10,24 @@ interface IStore {
   setStore: (payload: Record<string, any>) => void;
 }
 
-const getCxtProvider =
-  (
-    key: string,
-    defaultValue: Record<string, any>,
-    AppContext: React.Context<IStore>
-  ) =>
-  ({ children }: IPropChild) => {
-    const [store, setStore] = useState(defaultValue);
+const getCxtProvider = (
+  key: string,
+  defaultValue: Record<string, any>,
+  AppContext: React.Context<IStore>,
+) => ({ children }: IPropChild) => {
+  const [store, setStore] = useState(defaultValue);
 
-    const value = useMemo(
-      () => ({
-        key,
-        store,
-        setStore,
-      }),
-      [store]
-    );
+  const value = useMemo(
+    () => ({
+      key,
+      store,
+      setStore,
+    }),
+    [store],
+  );
 
-    return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
-  };
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+};
 
 const cxtCache: Record<string, Cxt> = {};
 
@@ -61,7 +61,7 @@ export const useAppContext = (key: string) => {
 
 export const connectFactory = (
   key: string,
-  defaultValue: Record<string, any>
+  defaultValue: Record<string, any>,
 ) => {
   const cxt = cxtCache[key];
   let CurCxt: Cxt;

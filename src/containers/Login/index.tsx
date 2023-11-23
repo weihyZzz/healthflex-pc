@@ -1,17 +1,18 @@
-import { LockOutlined, MobileOutlined } from "@ant-design/icons";
+import { LockOutlined, MobileOutlined } from '@ant-design/icons';
 import {
   LoginFormPage,
   ProFormCaptcha,
   ProFormCheckbox,
   ProFormText,
-} from "@ant-design/pro-components";
-import { message, Tabs } from "antd";
+} from '@ant-design/pro-components';
+import { message, Tabs } from 'antd';
 
-import styles from "./index.module.less";
-import { useMutation } from "@apollo/client";
-import { LOGIN, SEND_CODE_MSG } from "../../graphql/auth";
-import { AUTH_TOKEN } from "../../utils/constants";
-import { useNavigate } from "react-router-dom";
+import { useMutation } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
+import styles from './index.module.less';
+import { LOGIN, SEND_CODE_MSG } from '../../graphql/auth';
+import { AUTH_TOKEN } from '../../utils/constants';
+
 interface Ivalue {
   tel: string;
   code: string;
@@ -22,7 +23,7 @@ export default () => {
   // 执行发送短信验证码的函数
   const [run] = useMutation(SEND_CODE_MSG);
   const [login] = useMutation(LOGIN);
-  const nav = useNavigate()
+  const nav = useNavigate();
   const loginHandler = async (values: Ivalue) => {
     console.log('values:', values);
     const res = await login({
@@ -31,9 +32,9 @@ export default () => {
     if (res.data.login.code === 200) {
       message.success(res.data.login.message);
       if (values.autoLogin) {
-        localStorage.setItem(AUTH_TOKEN, res.data.login.data)
+        localStorage.setItem(AUTH_TOKEN, res.data.login.data);
       }
-      nav('/')
+      nav('/');
       return;
     }
     message.error(res.data.login.message);
@@ -51,7 +52,7 @@ export default () => {
         <>
           <ProFormText
             fieldProps={{
-              size: "large",
+              size: 'large',
               prefix: <MobileOutlined className="prefixIcon" />,
             }}
             name="tel"
@@ -59,39 +60,39 @@ export default () => {
             rules={[
               {
                 required: true,
-                message: "请输入手机号！",
+                message: '请输入手机号！',
               },
               {
                 pattern: /^1\d{10}$/,
-                message: "手机号格式错误！",
+                message: '手机号格式错误！',
               },
             ]}
           />
           <ProFormCaptcha
             fieldProps={{
-              size: "large",
+              size: 'large',
               prefix: <LockOutlined className="prefixIcon" />,
             }}
             captchaProps={{
-              size: "large",
+              size: 'large',
             }}
             placeholder="请输入验证码"
             captchaTextRender={(timing, count) => {
               if (timing) {
-                return `${count} ${"获取验证码"}`;
+                return `${count} ${'获取验证码'}`;
               }
-              return "获取验证码";
+              return '获取验证码';
             }}
             phoneName="tel"
             name="code"
             rules={[
               {
                 required: true,
-                message: "请输入验证码！",
+                message: '请输入验证码！',
               },
             ]}
             onGetCaptcha={async (tel: string) => {
-              console.log("phone", tel);
+              console.log('phone', tel);
               const res = await run({
                 variables: {
                   tel,

@@ -1,17 +1,18 @@
-import Home from "../containers/Home";
-import Login from "../containers/Login";
+/* eslint-disable @typescript-eslint/quotes */
+import Home from '../containers/Home';
+import Login from '../containers/Login';
 
 export const ROUTE_CONFIG = [
   {
-    key: "home",
-    path: "/",
+    key: 'home',
+    path: '/',
     element: Home,
-    title: "首页",
+    title: '首页',
   },
   {
-    key: "login",
-    path: "/login",
+    key: 'login',
+    path: '/login',
     element: Login,
-    title: "登录",
+    title: '登录',
   },
 ];

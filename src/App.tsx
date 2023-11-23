@@ -1,10 +1,8 @@
-import './App.css'
-import Login from './containers/Login'
+import './App.css';
+import Login from './containers/Login';
 
-const App = () => {
-  return (
-      <Login/>
-  )
-}
+const App = () => (
+  <Login />
+);
 
-export default App
+export default App;

@@ -10,15 +10,19 @@ import { message, Tabs } from "antd";
 import styles from "./index.module.less";
 import { useMutation } from "@apollo/client";
 import { LOGIN, SEND_CODE_MSG } from "../../graphql/auth";
+import { AUTH_TOKEN } from "../../utils/constants";
+import { useNavigate } from "react-router-dom";
 interface Ivalue {
   tel: string;
   code: string;
+  autoLogin: boolean;
 }
 
 export default () => {
   // 执行发送短信验证码的函数
   const [run] = useMutation(SEND_CODE_MSG);
   const [login] = useMutation(LOGIN);
+  const nav = useNavigate()
   const loginHandler = async (values: Ivalue) => {
     console.log('values:', values);
     const res = await login({
@@ -26,6 +30,10 @@ export default () => {
     });
     if (res.data.login.code === 200) {
       message.success(res.data.login.message);
+      if (values.autoLogin) {
+        localStorage.setItem(AUTH_TOKEN, res.data.login.data)
+      }
+      nav('/')
       return;
     }
     message.error(res.data.login.message);

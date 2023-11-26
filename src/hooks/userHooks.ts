@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useQuery } from '@apollo/client';
 import { GET_USER } from '@/graphql/user';
 import { connectFactory, useAppContext } from '@/utils/contextFactory';
@@ -19,9 +20,11 @@ export const useGetUser = () => {
   const { loading, refetch } = useQuery<{ getUserInfo: IUser }>(GET_USER, {
     onCompleted: (data) => {
       if (data.getUserInfo) {
-        const { id, name, tel } = data.getUserInfo;
+        const {
+          id, name, tel, desc, avatar,
+        } = data.getUserInfo;
         setStore({
-          id, name, tel,
+          id, name, tel, desc, avatar, refetchHandler: refetch,
         });
         // 如果当前在登陆页，且已经登录，则跳转到首页
         if (location.pathname === '/login') {

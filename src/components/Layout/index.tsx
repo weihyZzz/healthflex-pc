@@ -4,7 +4,10 @@ import { useUserContext } from '@/hooks/userHooks';
 import { MenuDataItem, PageContainer, ProLayout } from '@ant-design/pro-components';
 import { Link, useNavigate, useOutlet } from 'react-router-dom';
 import { AUTH_TOKEN } from '@/utils/constants';
-import { routes } from '@/routes/menus';
+import { ROUTE_KEY, routes } from '@/routes/menus';
+import { Space } from 'antd';
+import { LoginOutlined } from '@ant-design/icons';
+import { useGoTo } from '@/hooks';
 import styles from './index.module.less';
 /**
 *
@@ -14,8 +17,9 @@ const menuItemRender = (item: MenuDataItem, dom: React.ReactNode) => <Link to={i
 const Layout = ({}) => {
   const outlet = useOutlet();
   const { store } = useUserContext();
+  const { go } = useGoTo();
   const nav = useNavigate();
-  const logout = () => {
+  const logoutHandler = () => {
     sessionStorage.setItem(AUTH_TOKEN, '');
     localStorage.setItem(AUTH_TOKEN, '');
     nav('/login');
@@ -26,11 +30,17 @@ const Layout = ({}) => {
       siderWidth={130}
       layout="mix"
       avatarProps={{
-        src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjgoz8ebq-C4kWTTa9La1rZT_JSt5s8DmAFcz5wOgVmRRbQYT48dhtLq_YorQp8uktirM&usqp=CAU',
-        title: store.tel,
+        src: store.avatar || null,
+        title: store.name,
         size: 'small',
-        onClick: logout,
+        onClick: () => go(ROUTE_KEY.MY),
       }}
+      links={[
+        <Space size={20} onClick={logoutHandler}>
+          <LoginOutlined />
+          退出
+        </Space>,
+      ]}
       logo={(
         <img
           style={{

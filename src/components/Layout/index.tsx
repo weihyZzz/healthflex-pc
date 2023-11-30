@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-empty-pattern */
 import { useUserContext } from '@/hooks/userHooks';
@@ -27,7 +28,7 @@ const Layout = ({}) => {
   return (
     <ProLayout
       className={styles.container}
-      siderWidth={130}
+      siderWidth={150}
       layout="mix"
       avatarProps={{
         src: store.avatar || null,
@@ -41,6 +42,7 @@ const Layout = ({}) => {
           退出
         </Space>,
       ]}
+      title={false}
       logo={(
         <img
           style={{
@@ -51,7 +53,6 @@ const Layout = ({}) => {
           alt="healthflex"
         />
 )}
-      title={false}
       route={{
         path: '/',
         routes,
@@ -59,9 +60,8 @@ const Layout = ({}) => {
       onMenuHeaderClick={() => nav('/')}
       menuItemRender={menuItemRender}
     >
-      <PageContainer>
-        {outlet}
-      </PageContainer>
+      {outlet}
+
     </ProLayout>
   );
 };

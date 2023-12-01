@@ -5,9 +5,9 @@ export interface IPropChild {
 export interface IUser {
   id: string;
   tel: string;
-  name?: string;
-  desc?: string;
-  avatar?: string;
+  name: string;
+  desc: string;
+  avatar: string;
 }
 export interface IPage {
   pageNum: number;
@@ -20,10 +20,7 @@ export interface IMedia {
   remark: string;
 }
 /**
- *
  * 门店
- *
- * IOrganization
  */
 export interface IOrganization {
   id: string;
@@ -42,4 +39,9 @@ export interface IOrganization {
   identityCardFrontImg:string
   businessLicense:string
 }
+
+export type TBaseOrganization = Partial<IOrganization>;
+
 export type TOrgsQuery = { [key: string]: { __typename?: 'Query', data: IOrganization[], page: IPage } };
+
+export type TOrgQuery = { [key: string]: { __typename?: 'Query', data: IOrganization } };

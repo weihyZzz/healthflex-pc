@@ -24,9 +24,11 @@ const My = () => {
       tel: store.tel,
       name: store.name,
       desc: store.desc,
-      avatar: {
-        url: store.avatar,
-      },
+      avatar: [
+        {
+          url: store.avatar,
+        },
+      ],
     });
   }, [store]);
   return (
@@ -45,19 +47,18 @@ const My = () => {
       }
         onFinish={
         async (values) => {
-          console.log('values', values);
           const res = await updateUserInfo({
             variables: {
               id: store.id,
               params: {
                 name: values.name,
                 desc: values.desc,
-                avatar: values.avatar?.url || '',
+                avatar: values.avatar[0]?.url || '',
               },
             },
           });
           if (res.data.updateUserInfo.code === 200) {
-            store.refetchHandler();
+            store.refetchHandler?.();
             message.success(res.data.updateUserInfo.message);
             return;
           }
@@ -86,7 +87,9 @@ const My = () => {
           </Col>
           <Col>
             <Form.Item name="avatar">
-              <OSSImageUpload />
+              <OSSImageUpload
+                label="替换logo"
+              />
             </Form.Item>
 
           </Col>

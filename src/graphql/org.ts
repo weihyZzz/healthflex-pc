@@ -20,3 +20,44 @@ query getOrganizations($page: PageInput!) {
     }
   }
 `;
+export const GET_ORG = gql`
+query getOrganizationInfo(
+  $id: String!
+  ) {
+    getOrganizationInfo(id: $id) {
+      data {
+        description
+        name
+        tags
+        id
+        orgFrontImg {
+          url
+        }
+        orgRoomImg {
+          url
+        }
+        orgOtherImg {
+          url
+        }
+        logo
+        address
+        tel
+        longitude
+        latitude
+        identityCardBackImg
+        identityCardFrontImg
+        businessLicense
+      }
+      code
+      message
+  }
+}
+`;
+export const COMMIT_ORG = gql`
+  mutation commitOrganization($params: OrganizationInput!, $id: String) {
+    commitOrganization(params: $params, id: $id) {
+      code
+      message
+    }
+}
+`;

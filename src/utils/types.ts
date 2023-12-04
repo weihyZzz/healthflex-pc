@@ -8,6 +8,8 @@ export interface IUser {
   name: string;
   desc: string;
   avatar: string;
+  refetchHandler?: () => void;
+  currentOrg?: string;
 }
 export interface IPage {
   pageNum: number;

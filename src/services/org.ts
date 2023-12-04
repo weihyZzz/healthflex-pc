@@ -1,4 +1,6 @@
-import { COMMIT_ORG, GET_ORG, GET_ORGS } from '@/graphql/org';
+import {
+  COMMIT_ORG, DEL_ORG, GET_ORG, GET_ORGS,
+} from '@/graphql/org';
 import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
 import { TBaseOrganization, TOrgQuery, TOrgsQuery } from '@/utils/types';
 import { useMutation, useQuery } from '@apollo/client';
@@ -43,4 +45,21 @@ export const useEditInfo = ():[handleEdit: Function, loading: boolean] => {
     message.info(res.data.commitOrganization.message);
   };
   return [handleEdit, loading];
+};
+export const useDeleteOrg = (): [handleEdit: Function, loading: boolean] => {
+  const [del, { loading }] = useMutation(DEL_ORG);
+  const delHandler = async (id: number, callback: () => void) => {
+    const res = await del({
+      variables: {
+        id,
+      },
+    });
+    if (res.data.deleteOrganization.code === 200) {
+      message.success(res.data.deleteOrganization.message);
+      callback();
+      return;
+    }
+    message.error(res.data.deleteOrganization.message);
+  };
+  return [delHandler, loading];
 };

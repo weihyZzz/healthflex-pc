@@ -17,14 +17,14 @@ const getCxtProvider = (
 ) => ({ children }: IPropChild) => {
   const [store, setStore] = useState(defaultValue);
 
-  const value = useMemo(
-    () => ({
-      key,
-      store,
-      setStore,
-    }),
-    [store],
-  );
+  const value = useMemo(() => ({
+    key,
+    store,
+    setStore: (payload = {}) => setStore((state) => ({
+      ...state,
+      ...payload,
+    })),
+  }), [store]);
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

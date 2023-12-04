@@ -6,10 +6,11 @@ import { MenuDataItem, PageContainer, ProLayout } from '@ant-design/pro-componen
 import { Link, useNavigate, useOutlet } from 'react-router-dom';
 import { AUTH_TOKEN } from '@/utils/constants';
 import { ROUTE_KEY, routes } from '@/routes/menus';
-import { Space } from 'antd';
-import { LoginOutlined } from '@ant-design/icons';
+import { Space, Tooltip } from 'antd';
+import { LoginOutlined, ShopOutlined } from '@ant-design/icons';
 import { useGoTo } from '@/hooks';
 import styles from './index.module.less';
+import OrgSelect from '../OrgSelect';
 /**
 *
 */
@@ -24,6 +25,9 @@ const Layout = ({}) => {
     sessionStorage.setItem(AUTH_TOKEN, '');
     localStorage.setItem(AUTH_TOKEN, '');
     nav('/login');
+  };
+  const goToOrg = () => {
+    go(ROUTE_KEY.ORG);
   };
   return (
     <ProLayout
@@ -58,6 +62,12 @@ const Layout = ({}) => {
         routes,
       }}
       onMenuHeaderClick={() => nav('/')}
+      actionsRender={() => [
+        <OrgSelect />,
+        <Tooltip title="门店管理">
+          <ShopOutlined onClick={goToOrg} />
+        </Tooltip>,
+      ]}
       menuItemRender={menuItemRender}
     >
       {outlet}

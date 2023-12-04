@@ -20,6 +20,18 @@ query getOrganizations($page: PageInput!) {
     }
   }
 `;
+export const GET_SAMPLE_ORGS = gql`
+query getOrganizations($page: PageInput!, $name: String) {
+  getOrganizations(page: $page, name: $name){
+    code
+    message
+    data {
+      id
+      name
+    }
+  }
+}
+`;
 export const GET_ORG = gql`
 query getOrganizationInfo(
   $id: String!

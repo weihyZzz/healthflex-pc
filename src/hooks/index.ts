@@ -14,7 +14,7 @@ export const useGoTo = () => {
   const nav = useNavigate();
   const back = () => nav(-1);
   const go = (
-    pageKey: string,
+    pageKey?: string,
     params?: Record<string, string | number>,
   ) => {
     if (!pageKey) {

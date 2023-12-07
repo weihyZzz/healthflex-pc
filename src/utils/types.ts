@@ -47,3 +47,18 @@ export type TBaseOrganization = Partial<IOrganization>;
 export type TOrgsQuery = { [key: string]: { __typename?: 'Query', data: IOrganization[], page: IPage } };
 
 export type TOrgQuery = { [key: string]: { __typename?: 'Query', data: IOrganization } };
+
+export type TCourseQuery = { [key: string]: { __typename?: 'Query', data: ICourse[], page: IPage } };
+
+export interface ICourse {
+  id: string;
+  name: string; // 标题
+  desc?: string;
+  group?: string; // 适龄人群
+  baseAbility?: string;
+  limitNumber: number; // 限制人数
+  duration: number; // 持续时长
+  reserveInfo?: string;
+  refundInfo?: string;
+  otherInfo?: string;
+}

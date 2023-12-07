@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { HomeOutlined, ShoppingOutlined } from '@ant-design/icons';
+import { HomeOutlined, PicRightOutlined, ShoppingOutlined } from '@ant-design/icons';
 
 interface IRoute {
   path: string;
@@ -14,6 +14,7 @@ export const ROUTE_KEY = {
   ORG: 'org',
   NO_ORG: 'noOrg',
   PAGE_404: '404',
+  COURSE: 'course',
 };
 
 export const ROUTE_CONFIG: Record<string, IRoute> = {
@@ -38,6 +39,11 @@ export const ROUTE_CONFIG: Record<string, IRoute> = {
     path: 'noOrg',
     name: '选择门店提示',
     hideInMenu: true,
+  },
+  [ROUTE_KEY.COURSE]: {
+    path: 'course',
+    name: '课程管理',
+    icon: <PicRightOutlined />,
   },
   [ROUTE_KEY.PAGE_404]:
   {

@@ -1,7 +1,8 @@
-import { TCourseQuery } from '@/utils/types';
-import { useQuery } from '@apollo/client';
+import { TBaseCourse, TCourseQuery } from '@/utils/types';
+import { useMutation, useQuery } from '@apollo/client';
 import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
-import { GET_COURSES } from '../graphql/course';
+import { message } from 'antd';
+import { COMMIT_COURSE, GET_COURSES } from '../graphql/course';
 
 export const useCourses = (
   pageNum = 1,
@@ -23,8 +24,8 @@ export const useCourses = (
   }) => {
     const { data: res, errors } = await refetch({
       page: {
-        pageNum: params.current,
-        pageSize: params.pageSize,
+        pageNum: params.current || 1,
+        pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
       },
       name: params.name,
     });
@@ -45,4 +46,22 @@ export const useCourses = (
     page: data?.getCourses.page,
     data: data?.getCourses.data,
   };
+};
+export const useEditInfo = ():[handleEdit: Function, loading: boolean] => {
+  const [edit, { loading }] = useMutation(COMMIT_COURSE);
+  const handleEdit = async (id: number, params: TBaseCourse, callback: Function) => {
+    const res = await edit({
+      variables: {
+        id,
+        params,
+      },
+    });
+    if (res.data.commitCourseInfo.code === 200) {
+      message.success(res.data.commitCourseInfo.message);
+      callback();
+      return;
+    }
+    message.error(res.data.commitCourseInfo.message);
+  };
+  return [handleEdit, loading];
 };

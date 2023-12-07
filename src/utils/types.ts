@@ -62,3 +62,4 @@ export interface ICourse {
   refundInfo?: string;
   otherInfo?: string;
 }
+export type TBaseCourse = Partial<ICourse>;

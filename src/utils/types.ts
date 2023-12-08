@@ -48,7 +48,15 @@ export type TOrgsQuery = { [key: string]: { __typename?: 'Query', data: IOrganiz
 
 export type TOrgQuery = { [key: string]: { __typename?: 'Query', data: IOrganization } };
 
-export type TCourseQuery = { [key: string]: { __typename?: 'Query', data: ICourse[], page: IPage } };
+export interface IStudent {
+  name: string;
+  id: string;
+  tel: string;
+  avatar: string;
+  account: string;
+}
+
+export type TStudentQuery = { [key: string]: { __typename?: 'Query', data: IStudent[], page: IPage } };
 
 export interface ICourse {
   id: string;
@@ -62,4 +70,9 @@ export interface ICourse {
   refundInfo?: string;
   otherInfo?: string;
 }
+
+export type TCoursesQuery = { [key: string]: { __typename?: 'Query', data: ICourse[], page: IPage } };
+
+export type TCourseQuery = { [key: string]: { __typename?: 'Query', data: ICourse, page: IPage } };
+
 export type TBaseCourse = Partial<ICourse>;

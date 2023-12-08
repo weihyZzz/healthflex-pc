@@ -1,14 +1,14 @@
-import { TBaseCourse, TCourseQuery } from '@/utils/types';
-import { useMutation, useQuery } from '@apollo/client';
-import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
 import { message } from 'antd';
-import { COMMIT_COURSE, GET_COURSES } from '../graphql/course';
+import { TBaseCourse, TCoursesQuery } from '@/utils/types';
+import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
+import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
+import { COMMIT_COURSE, GET_COURSE, GET_COURSES } from '../graphql/course';
 
 export const useCourses = (
   pageNum = 1,
   pageSize = DEFAULT_PAGE_SIZE,
 ) => {
-  const { loading, data, refetch } = useQuery<TCourseQuery>(GET_COURSES, {
+  const { loading, data, refetch } = useQuery<TCoursesQuery>(GET_COURSES, {
     skip: true,
     variables: {
       page: {
@@ -17,18 +17,20 @@ export const useCourses = (
       },
     },
   });
+
   const refetchHandler = async (params: {
+    name?: string;
     pageSize?: number;
     current?: number;
-    name?: string;
   }) => {
     const { data: res, errors } = await refetch({
+      name: params.name,
       page: {
         pageNum: params.current || 1,
         pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
       },
-      name: params.name,
     });
+
     if (errors) {
       return {
         success: false,
@@ -40,6 +42,7 @@ export const useCourses = (
       success: true,
     };
   };
+
   return {
     loading,
     refetch: refetchHandler,
@@ -47,21 +50,46 @@ export const useCourses = (
     data: data?.getCourses.data,
   };
 };
-export const useEditInfo = ():[handleEdit: Function, loading: boolean] => {
+
+export const useEditInfo = (): [handleEdit: Function, loading: boolean] => {
   const [edit, { loading }] = useMutation(COMMIT_COURSE);
-  const handleEdit = async (id: number, params: TBaseCourse, callback: Function) => {
+
+  const handleEdit = async (
+    id: number,
+    params: TBaseCourse,
+    callback: () => void,
+  ) => {
     const res = await edit({
       variables: {
         id,
         params,
       },
     });
+    console.log('useEditInfo关闭抽屉', res);
     if (res.data.commitCourseInfo.code === 200) {
       message.success(res.data.commitCourseInfo.message);
+      console.log(' callback(true);');
       callback();
       return;
     }
     message.error(res.data.commitCourseInfo.message);
   };
+
   return [handleEdit, loading];
+};
+
+export const useCourse = () => {
+  const [get, { loading }] = useLazyQuery(GET_COURSE);
+
+  const getCourse = async (id: string) => {
+    const res = await get({
+      variables: {
+        id,
+      },
+    });
+
+    return res.data.getCourseInfo.data;
+  };
+
+  return { getCourse, loading };
 };

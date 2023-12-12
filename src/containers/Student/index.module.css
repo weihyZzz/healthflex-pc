@@ -1,0 +1,13 @@
+.container .card {
+  width: 200px;
+  float: left;
+  margin: 5px;
+}
+.container .card .avatar {
+  height: 200px;
+  background-size: 100% auto;
+}
+.container .page {
+  clear: both;
+  float: right;
+}

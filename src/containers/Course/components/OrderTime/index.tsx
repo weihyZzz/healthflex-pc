@@ -4,16 +4,16 @@
 import {
   Button, Col, Drawer, Row, Space, Tabs,
 } from 'antd';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { EditableProTable } from '@ant-design/pro-components';
 import { ChromeOutlined, RedoOutlined } from '@ant-design/icons';
-import { useCourseInfo, useEditCourseInfo } from '@/services/course';
-import { IOrderTime, IWeekCourse } from '@/utils/types';
+import { IOrderTime } from '@/utils/types';
 import _ from 'lodash';
 import style from './index.module.less';
 import {
   DAYS, IDay, getColumns, getMaxKey, isWorkDay,
 } from './constants';
+import { useOrderTime } from './hooks';
 
 interface IProps {
   id: string;
@@ -31,65 +31,19 @@ const OrderTime = (
   }: IProps,
 ) => {
   const [currentDay, setCurrentDay] = useState<IDay>(DAYS[0]);
-  const { data, loading, refetch } = useCourseInfo(id);
-  const [edit, editLoading] = useEditCourseInfo();
   const onTabChangeHandler = (key: string) => {
     const current = DAYS.find((item) => item.key === key) as IDay;
     console.log('currentDay', currentDay);
     setCurrentDay(current);
   };
-  console.log('data?.reducibleTime', data?.reducibleTime);
-  const orderTime = useMemo(() => (data?.reducibleTime || []).find((item) => item.week === currentDay.key)?.orderTime, [data, currentDay]) || [];
-  const onSaveHandler = (ot: IOrderTime[]) => {
-    const rt = [...(data?.reducibleTime || [])];
-    const index = rt.findIndex((item) => item.week === currentDay.key);
-    if (index > -1) {
-      rt[index] = {
-        week: currentDay.key,
-        orderTime: ot,
-      };
-    } else {
-      rt.push({
-        week: currentDay.key,
-        orderTime: ot,
-      });
-    }
-    edit(id, {
-      reducibleTime: rt,
-    }, refetch);
-  };
-  const onDeleteHandler = (key: number) => {
-    const newData = orderTime.filter((item) => item.key !== key);
-    onSaveHandler(newData);
-  };
-  const allWorkDaySyncHandler = () => {
-    // console.log('allWorkDaySyncHandler click');
-    const rt: IWeekCourse[] = [];
-    DAYS.forEach((item) => {
-      if (isWorkDay(item.key)) {
-        // 如果是工作日
-        rt.push({
-          week: item.key,
-          orderTime,
-        });
-      }
-    });
-    edit(id, {
-      reducibleTime: rt,
-    }, () => refetch());
-  };
-  const allWeekSyncHandler = () => {
-    const rt: IWeekCourse[] = [];
-    DAYS.forEach((item) => {
-      rt.push({
-        week: item.key,
-        orderTime,
-      });
-    });
-    edit(id, {
-      reducibleTime: rt,
-    }, () => refetch());
-  };
+  const {
+    orderTime,
+    loading,
+    onDeleteHandler,
+    onSaveHandler,
+    allWeekSyncHandler,
+    allWorkDaySyncHandler,
+  } = useOrderTime(id, currentDay.key);
   return (
     <Drawer
       title="编辑预约时间"
@@ -125,7 +79,7 @@ const OrderTime = (
             onSaveHandler(newData);
           },
         }}
-        loading={loading || editLoading}
+        loading={loading}
         rowKey="key"
         recordCreatorProps={{
           record: () => ({

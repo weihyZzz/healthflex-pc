@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 export interface IPropChild {
   children: React.ReactNode;
 }
@@ -58,6 +59,19 @@ export interface IStudent {
 
 export type TStudentQuery = { [key: string]: { __typename?: 'Query', data: IStudent[], page: IPage } };
 
+export interface IOrderTime {
+  startTime: string;
+  endTime: string;
+  key: number;
+}
+
+export type TWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+
+export interface IWeekCourse {
+  week: string;
+  orderTime: IOrderTime[];
+}
+
 export interface ICourse {
   id: string;
   name: string; // 标题
@@ -69,6 +83,7 @@ export interface ICourse {
   reserveInfo?: string;
   refundInfo?: string;
   otherInfo?: string;
+  reducibleTime? : IWeekCourse[];
 }
 
 export type TCoursesQuery = { [key: string]: { __typename?: 'Query', data: ICourse[], page: IPage } };

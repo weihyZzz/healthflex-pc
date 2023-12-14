@@ -9,6 +9,7 @@ import { ROUTE_KEY, routes } from '@/routes/menus';
 import { Space, Tooltip } from 'antd';
 import { LoginOutlined, ShopOutlined } from '@ant-design/icons';
 import { useGoTo } from '@/hooks';
+import { currentOrg } from '@/utils';
 import styles from './index.module.less';
 import OrgSelect from '../OrgSelect';
 /**
@@ -70,8 +71,9 @@ const Layout = ({}) => {
       ]}
       menuItemRender={menuItemRender}
     >
-      {outlet}
-
+      <div key={store.currentOrg}>
+        {outlet}
+      </div>
     </ProLayout>
   );
 };

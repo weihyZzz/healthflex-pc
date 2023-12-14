@@ -8,7 +8,7 @@ export const useOrderTime = (id: string, currentDayKey: TWeek) => {
   const { data, loading, refetch } = useCourseInfo(id);
   const [edit, editLoading] = useEditCourseInfo();
 
-  console.log('data?.reducibleTime', data?.reducibleTime);
+  // console.log('data?.reducibleTime', data?.reducibleTime);
   const orderTime = useMemo(() => (data?.reducibleTime || []).find((item) => item.week === currentDayKey)?.orderTime, [data, currentDayKey]) || [];
   const onSaveHandler = (ot: IOrderTime[]) => {
     const rt = [...(data?.reducibleTime || [])];

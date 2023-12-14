@@ -11,7 +11,6 @@ const Student = () => {
   const {
     data, loading, page, refetch,
   } = useStudents();
-  console.log('data', data);
   const onPageChangeHandler = (pageNum: number, pageSize: number) => {
     refetch({
       page: {

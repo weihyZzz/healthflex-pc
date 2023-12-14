@@ -91,11 +91,7 @@ export const getColumns = (onDeleteHandler: Function): ProColumns[] => [
   },
 ];
 
-export const isWorkDay = (day: string) => {
-  console.log('isWorkDay校验', day);
-  return ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'].includes(day);
-};
-
+export const isWorkDay = (day: string) => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'].includes(day);
 export const getMaxKey = (orderTime: IOrderTime[] | undefined): number => {
   const keys = orderTime?.map((item) => item.key) || [];
 

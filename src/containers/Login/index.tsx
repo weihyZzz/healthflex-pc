@@ -30,12 +30,11 @@ export default () => {
   const { store } = useUserContext();
   useTitle('登录');
   const loginHandler = async (values: Ivalue) => {
-    console.log('values:', values);
+    // console.log('values:', values);
     const res = await login({
       variables: values,
     });
     if (res.data.login.code === 200) {
-      console.log('store.refetchHandler', store.refetchHandler);
       if (store.refetchHandler) {
         store.refetchHandler();
       }

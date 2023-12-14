@@ -11,7 +11,7 @@ import style from './index.module.less';
 const Home = ({}) => {
   const { store } = useUserContext();
   const { go } = useGoTo();
-  console.log('store', store);
+  // console.log('store', store);
   return (
     <div className={style.container}>
       <Button onClick={() => go(ROUTE_KEY.MY)}>

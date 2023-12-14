@@ -65,10 +65,8 @@ export const useEditCourseInfo = (): [handleEdit: Function, loading: boolean] =>
         params,
       },
     });
-    console.log('useEditInfo关闭抽屉', res);
     if (res.data.commitCourseInfo.code === 200) {
       message.success(res.data.commitCourseInfo.message);
-      console.log(' callback(true);');
       callback();
       return;
     }

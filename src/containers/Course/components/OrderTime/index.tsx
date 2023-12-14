@@ -18,22 +18,21 @@ import { useOrderTime } from './hooks';
 interface IProps {
   id: string;
   onClose: (isReload?: boolean) => void;
-  open: boolean;
 }
 /**
 *
 */
 const OrderTime = (
   {
-    open,
     onClose,
     id,
   }: IProps,
 ) => {
   const [currentDay, setCurrentDay] = useState<IDay>(DAYS[0]);
+  console.log('OrderTime');
   const onTabChangeHandler = (key: string) => {
     const current = DAYS.find((item) => item.key === key) as IDay;
-    console.log('currentDay', currentDay);
+    // console.log('currentDay', currentDay);
     setCurrentDay(current);
   };
   const {
@@ -48,7 +47,7 @@ const OrderTime = (
     <Drawer
       title="编辑预约时间"
       width={720}
-      open={open}
+      open
       onClose={() => onClose()}
       forceRender
     >
@@ -75,7 +74,7 @@ const OrderTime = (
               newData = orderTime?.map((item) => (item.key === rowKey ? _.omit(d, 'index') : { ...item }));
             }
             newData = [...orderTime, _.omit(d, 'index')];
-            console.log('newData', newData);
+            // console.log('newData', newData);
             onSaveHandler(newData);
           },
         }}

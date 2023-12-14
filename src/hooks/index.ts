@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { getRouteByKey, routes } from '@/routes/menus';
+import {
+  ROUTE_CONFIG, ROUTE_KEY, getRouteByKey, routes,
+} from '@/routes/menus';
 import { useEffect, useMemo } from 'react';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 
@@ -43,7 +45,15 @@ export const useGoTo = () => {
 export const useMatchedRoute = () => {
   const r = useLocation();
   const route = useMemo(() => routes.find(
-    (item) => matchPath(item.path, r.pathname),
+    (item) => matchPath(`/${item.path}`, r.pathname),
   ), [r.pathname]);
   return route;
+};
+// 判断当前路由是否是Org
+export const useIsOrgRoute = () => {
+  const curRoute = useMatchedRoute();
+  if (curRoute?.path === ROUTE_CONFIG[ROUTE_KEY.ORG].path) {
+    return true;
+  }
+  return false;
 };

@@ -15,7 +15,7 @@ export const ROUTE_KEY = {
   MY: 'my',
   ORG: 'org',
   NO_ORG: 'noOrg',
-  PAGE_404: '404',
+  PAGE_404: 'p404',
   COURSE: 'course',
   STUDENT: 'student',
 };

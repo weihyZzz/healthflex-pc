@@ -8,7 +8,7 @@ import { AUTH_TOKEN } from '@/utils/constants';
 import { ROUTE_KEY, routes } from '@/routes/menus';
 import { Space, Tooltip } from 'antd';
 import { LoginOutlined, ShopOutlined } from '@ant-design/icons';
-import { useGoTo } from '@/hooks';
+import { useGoTo, useIsOrgRoute } from '@/hooks';
 import { currentOrg } from '@/utils';
 import styles from './index.module.less';
 import OrgSelect from '../OrgSelect';
@@ -22,6 +22,7 @@ const Layout = ({}) => {
   const { store } = useUserContext();
   const { go } = useGoTo();
   const nav = useNavigate();
+  const isOrg = useIsOrgRoute();
   const logoutHandler = () => {
     sessionStorage.setItem(AUTH_TOKEN, '');
     localStorage.setItem(AUTH_TOKEN, '');
@@ -64,7 +65,7 @@ const Layout = ({}) => {
       }}
       onMenuHeaderClick={() => nav('/')}
       actionsRender={() => [
-        <OrgSelect />,
+        !isOrg && <OrgSelect />,
         <Tooltip title="门店管理">
           <ShopOutlined onClick={goToOrg} />
         </Tooltip>,

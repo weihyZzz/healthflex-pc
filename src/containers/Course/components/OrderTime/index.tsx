@@ -77,6 +77,9 @@ const OrderTime = (
             // console.log('newData', newData);
             onSaveHandler(newData);
           },
+          onDelete: async (key) => {
+            onDeleteHandler(key as number);
+          },
         }}
         loading={loading}
         rowKey="key"

@@ -8,6 +8,7 @@ import { useRef, useState } from 'react';
 import { getColumns } from './constants';
 import EditCourse from './components/EditCourse';
 import OrderTime from './components/OrderTime';
+import ConsumeCard from './components/ConsumeCard';
 
 /**
 * 当前门店下开设的课程
@@ -18,6 +19,7 @@ const Course = () => {
   const { refetch } = useCourses();
   const [showInfo, setShowInfo] = useState(false);
   const [showOrderTime, setShowOrderTime] = useState(false);
+  const [showCard, setShowCard] = useState(false);
   const onClickAddHandler = (id?: string) => {
     if (id) {
       setCurId(id);
@@ -34,6 +36,10 @@ const Course = () => {
     setShowInfo(false);
     actionRef.current?.reload();
   };
+  const onCardHandler = (id: string) => {
+    setCurId(id);
+    setShowCard(true);
+  };
   return (
     <PageContainer header={{ title: '当前门店下开设的课程' }}>
       <ProTable<ICourse>
@@ -42,6 +48,7 @@ const Course = () => {
         columns={getColumns({
           onEditHandler: onClickAddHandler,
           onOrderTimeHandler,
+          onCardHandler,
         })}
         pagination={{
           pageSize: DEFAULT_PAGE_SIZE,
@@ -55,6 +62,7 @@ const Course = () => {
       />
       { showInfo && <EditCourse id={curId} onClose={() => closeAndRefetchHandler()} /> }
       { showOrderTime && <OrderTime id={curId} onClose={() => setShowOrderTime(false)} /> }
+      { showCard && <ConsumeCard id={curId} onClose={() => setShowCard(false)} /> }
     </PageContainer>
   );
 };
